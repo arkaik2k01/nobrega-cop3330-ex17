@@ -49,45 +49,62 @@ Look up the legal BAC limit by state and prompt for the state. Display a message
 Develop this as a mobile application that makes it easy to record each drink, updating the BAC each time a drink is entered.
  */
 
-import java.util.Scanner;
-
-public class App
+public class BAC
 {
-    static Scanner in = new Scanner(System.in);
-    private final double BAC_LIMIT = 0.08;
+    private int ounces;
+    private int weight;
+    private int hours;
+    private int maleOrFem;
 
-    public static void main(String[] args)
+    private final double MALE_ADC = 0.73;
+    private final double FEM_ADC = 0.66;
+
+    public int getOunces()
     {
-        BAC bacCalc = new BAC();
-        App prog = new App();
-
-        //input
-        System.out.print("Enter a 1 if you are male or a 2 if you are female: ");
-        bacCalc.setMaleOrFem(in.nextInt());
-        while (bacCalc.getMaleOrFem() != 1 && bacCalc.getMaleOrFem() != 2) {
-            System.out.print("Invalid number. Enter a 1 if you are male or a 2 if you are female: ");
-            bacCalc.setMaleOrFem(in.nextInt());
-        }
-        System.out.print("How many ounces of alcohol did you have? ");
-        bacCalc.setOunces(in.nextInt());
-        System.out.print("What is your weight, in pounds? ");
-        bacCalc.setWeight(in.nextInt());
-        System.out.print("How many hours has it been since your last drink? ");
-        bacCalc.setHours(in.nextInt());
-
-        double bac = bacCalc.returnBAC();
-
-        //output
-        System.out.printf("Your BAC is %.5f%n", bac);
-        prog.checkBAC(bac);
+        return ounces;
     }
 
-    private void checkBAC(double BAC)
+    public void setOunces(int ounces)
     {
-        if (BAC > BAC_LIMIT) {
-            System.out.println("It is not legal for you to drive.");
-            return;
+        this.ounces = ounces;
+    }
+
+    public int getWeight()
+    {
+        return weight;
+    }
+
+    public void setWeight(int weight)
+    {
+        this.weight = weight;
+    }
+
+    public int getHours()
+    {
+        return hours;
+    }
+
+    public void setHours(int hours)
+    {
+        this.hours = hours;
+    }
+
+    public int getMaleOrFem()
+    {
+        return maleOrFem;
+    }
+
+    public void setMaleOrFem(int maleOrFem)
+    {
+        this.maleOrFem = maleOrFem;
+    }
+
+    public double returnBAC()
+    {
+        if (maleOrFem == 1) {
+            return ((ounces * 5.14 / weight * MALE_ADC) - 0.015 * hours);  //(A × 5.14 / W × r) − .015 × H
+        } else {
+            return ((ounces * 5.14 / weight * FEM_ADC) - 0.015 * hours);  //(A × 5.14 / W × r) − .015 × H
         }
-        System.out.println("It is legal for you to drive.");
     }
 }
